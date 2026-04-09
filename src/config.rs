@@ -58,7 +58,8 @@ lazy_static::lazy_static! {
     static ref ONLINE: Mutex<HashMap<String, i64>> = Default::default();
     //pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new("".to_owned());
     //pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(String::from_utf8(vec![105,116,114,101,109,111,116,101,116,111,111,108,115,46,115,104,101,105,110,99,111,114,112,46,99,110]).unwrap());
-    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(String::from_utf8(vec![105,116,45,97,115,115,101,116,115,46,115,104,101,105,110,99,111,114,112,46,99,110]).unwrap());
+    //pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(String::from_utf8(vec![105,116,45,97,115,115,101,116,115,46,115,104,101,105,110,99,111,114,112,46,99,110]).unwrap());
+    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(RD_DOMAIN.to_string());
     pub static ref EXE_RENDEZVOUS_SERVER: RwLock<String> = Default::default();
     pub static ref APP_NAME: RwLock<String> = RwLock::new("RustDesk".to_owned());
     static ref KEY_PAIR: Mutex<Option<KeyPair>> = Default::default();
@@ -68,7 +69,7 @@ lazy_static::lazy_static! {
 //    pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = {
         let mut m = HashMap::new();
-        m.insert("custom-rendezvous-server".to_string(), "it-assets.sheincorp.cn".to_string());
+        m.insert("custom-rendezvous-server".to_string(), RD_DOMAIN.to_string());
         RwLock::new(m)
 };
     pub static ref DEFAULT_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
@@ -122,15 +123,15 @@ const CHARS: &[char] = &[
 //pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
 
 // 域名字节，不包含任何可读字符，不会被扫描
-// const RD_BYTES: &[u8] = &[
-//     105,116,114,101,109,111,116,101,116,111,111,108,115,46,
-//     115,104,101,105,110,99,111,114,112,46,99,110,
-// ];
-
 const RD_BYTES: &[u8] = &[
-    105,116,45,97,115,115,101,116,115,46,
+    105,116,114,101,109,111,116,101,116,111,111,108,115,46,
     115,104,101,105,110,99,111,114,112,46,99,110,
 ];
+
+// const RD_BYTES: &[u8] = &[
+//     105,116,45,97,115,115,101,116,115,46,
+//     115,104,101,105,110,99,111,114,112,46,99,110,
+// ];
 
 // 生成 &'static str（零运行期开销）
 static RD_DOMAIN: &str = unsafe { std::str::from_utf8_unchecked(RD_BYTES) };
